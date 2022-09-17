@@ -18,8 +18,8 @@ public class TweetController {
    private final TweetService service;
 
    @PostMapping
-   public ResponseEntity<PostResponse> postTweet(@RequestBody PostRequest post) throws JsonProcessingException {
-      return Optional.of(service.postTweet(post))
+   public ResponseEntity<PostResponse> postTweet(@RequestBody PostRequest post, @RequestHeader String Authorization) {
+      return Optional.of(service.postTweet(post, Authorization))
          .map(ResponseEntity::ok)
          .orElse(ResponseEntity.status(400).build());
    }

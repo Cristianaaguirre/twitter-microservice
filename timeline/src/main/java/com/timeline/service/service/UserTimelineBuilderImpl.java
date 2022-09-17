@@ -32,10 +32,11 @@ public class UserTimelineBuilderImpl implements UserTimelineBuilder {
          .collect(Collectors.toList());
    }
 
+
    @Bean
-   public Consumer<Message<TweetEntity>> consumer() {
+   public Consumer<Message<TweetEntity>> userTimelineBuilder() {
       return c -> {
-         findAllByUserId(c.getPayload().getUserId());
+
       };
 
    }

@@ -16,9 +16,16 @@ public class UserEntity {
    private Long id;
    private String username;
    private String password;
+   @Enumerated
    private TypeStatus status;
 
    public UserEntity() {}
+
+   public UserEntity(String username, String password, TypeStatus status) {
+      this.username = username;
+      this.password = password;
+      this.status = status;
+   }
 
    public UserEntity(Long id, String username, String password, TypeStatus status) {
       this.id = id;

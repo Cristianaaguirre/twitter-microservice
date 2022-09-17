@@ -32,7 +32,8 @@ public class CacheConfiguration extends CachingConfigurerSupport {
    public CacheManager getManager(RedisConnectionFactory client) {
        var cacheConfig = Map.of(
           "post", createConfig(1, ChronoUnit.MINUTES),
-          "follow", createConfig(1, ChronoUnit.MINUTES)
+          "follow", createConfig(1, ChronoUnit.MINUTES),
+          "userTimeline", createConfig(1, ChronoUnit.MINUTES)
        );
        return RedisCacheManager
           .builder(client)

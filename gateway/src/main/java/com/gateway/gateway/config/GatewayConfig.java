@@ -10,36 +10,24 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class GatewayConfig {
 
+   private final AuthFilter filter;
+
+   public GatewayConfig(AuthFilter filter) {
+      this.filter = filter;
+   }
+
    @Bean
    public RouteLocator routeConfig(RouteLocatorBuilder builder) {
       return builder.routes()
          .route(r -> r.path("/tweet/**")
-            .uri("lb://post-service"))
+            .filters(f -> f.filter(filter))
+            .uri("lb://twitter"))
          .route(r -> r.path("/timeline/**")
-            .uri("lb://timeline-service"))
+            .filters(f -> f.filter(filter))
+            .uri("lb://timeline"))
+         .route(r -> r.path("/auth/**")
+            .uri("lb://authentication"))
          .build();
    }
 
-//   @Bean
-//   @Profile("localhost-eureka-cb-filter")
-//   public RouteLocator configLocalEurekaCbWithFilter(RouteLocatorBuilder builder) {
-//      return builder.routes()
-//         .route(r -> r.path("/dragonball/*")
-//            .filters(f -> {
-//               f.circuitBreaker(
-//                  c -> c.setName("failOverCb")
-//                     .setFallbackUri("forward:/dragonball-fo/character")
-//                     .setRouteId("DBFo"));
-//               f.filters(filter);
-//               return f;
-//            })
-//            .uri("lb://devs4j-dragon-ball"))
-//         .route(r -> r.path("/game-of-thrones/*")
-//            .uri("lb://devs4j-game-of-thrones"))
-//         .route(r -> r.path("/dragonball-fo/*")
-//            .uri("lb://devs4j-dragon-ball-failover"))
-//         .route(r -> r.path("/auth/**")
-//            .uri("lb://devs4j-auth"))
-//         .build();
-//   }
 }

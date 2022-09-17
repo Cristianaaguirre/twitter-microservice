@@ -25,7 +25,7 @@ public class TopicsName {
    @Component
    public static class SetTopicsName {
 
-      @Value("${topics}")
+      @Value("${topics.names}")
       private List<String> topics;
 
       @PostConstruct

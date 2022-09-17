@@ -1,6 +1,5 @@
 package com.twitter.service.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.twitter.service.config.TopicsName;
 import com.twitter.service.models.dtos.PostRequest;
 import com.twitter.service.models.dtos.PostResponse;
@@ -13,7 +12,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 
 
@@ -25,9 +23,10 @@ public class TweetServiceImpl implements TweetService {
    private final StreamBridge bridge;
 
    @Transactional
-   public PostResponse postTweet(PostRequest post) throws JsonProcessingException {
+   public PostResponse postTweet(PostRequest post, String token) {
       var tweet = TweetMapper.dtoToEntity(post, 1L);
       repository.save(tweet);
+
 
       var message = buildMessage(tweet);
       var topic = TopicsName.getTopic("created");
@@ -56,7 +55,7 @@ public class TweetServiceImpl implements TweetService {
    }
 
 
-   private Message<Object> buildMessage(Object id) {
+   private Message<?> buildMessage(Object id) {
       return MessageBuilder
          .withPayload(id)
          .build();

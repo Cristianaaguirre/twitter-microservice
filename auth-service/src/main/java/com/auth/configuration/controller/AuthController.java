@@ -1,12 +1,11 @@
 package com.auth.configuration.controller;
 
 import com.auth.configuration.models.dto.LoginDTO;
+import com.auth.configuration.models.dto.TokenDTO;
+import com.auth.configuration.models.dto.UserDTO;
 import com.auth.configuration.service.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -22,13 +21,21 @@ public class AuthController {
 
    @PostMapping("/register")
    public ResponseEntity<?> register(@RequestBody LoginDTO dto) {
-      return Optional.of(service.saveUser(dto))
-         .map(ResponseEntity::ok)
-         .orElse(ResponseEntity.status(500).build());
+      return ResponseEntity.ok(service.register(dto));
    }
 
    @PostMapping("/login")
-   public ResponseEntity<String> login(@RequestBody LoginDTO dto) {
+   public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO dto) {
+      return ResponseEntity.ok(service.login(dto));
+   }
+
+   @PostMapping("/validate")
+   public ResponseEntity<TokenDTO> validate(@RequestParam String token) {
+      return ResponseEntity.ok(service.validate(token));
+   }
+
+   @GetMapping("/me")
+   public ResponseEntity<String> getPersonalInformation(@RequestHeader String Authentication) {
       return null;
    }
 
